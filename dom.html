@@ -1,25 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>dom</title>
 </head>
+
 <body>
+    <a href="tel:17764530241">17764530241</a>
+    <button onclick="tel()">打电话</button>
     <div class="app" id="app" dir="rtl">
         hello world!
     </div>
     <ul id="ul">
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
+        <li class="li">1</li>
+        <li class="li">2</li>
+        <li class="li">3</li>
+        <li class="li">4</li>
+        <li class="li">5</li>
     </ul>
     <div>
         <button onclick="frameElementApi()">使用documentFragment API</button>
     </div>
     <script>
+        function tel() {
+            console.log('tel')
+            let event = document.createEvent('Events');
+            event.initEvent('ontouchend', true, false)
+            let a = document.querySelector('a');
+            console.log(a)
+            a.dispatchEvent(event)
+        }
         function frameElementApi() {
             let ul = document.querySelector('#ul');
             const liNodes = Array.from(ul.childNodes).filter(item => item.nodeType === Node.ELEMENT_NODE).reverse()
@@ -30,10 +42,43 @@
             ul.appendChild(documentFragment);
         }
     </script>
-
     <script>
-        let ul = document.querySelector('#ul');
-        let attrNode = ul.childNodes
+        function sleep(time) {
+            return new Promise((resolve, reject) => {
+                setTimeout(resolve, time)
+            })
+        }
+        (async function () {
+            let ul = document.querySelector('#ul');
+            let lis = ul.getElementsByTagName('li');
+            // getElementsByTagName 返回的NodeList具有实时性
+            for (let i = 0; i < lis.length; i++) {
+                const li = document.createElement('li');
+                li.innerHTML = lis.length + 1;
+                ul.appendChild(li);
+                await sleep(1000);
+            }
+        })()
+    </script>
+    <script>
+        (async function () {
+            // css类扩展
+            let ul = document.querySelector('#ul');
+            let lis = ul.getElementsByClassName('li');
+            for (let i = 0; i < lis.length; i++) {
+                const li = document.createElement('li');
+                li.innerHTML = lis.length + 1;
+                const styleAttr = document.createAttribute('style');
+                styleAttr.value = "color: red";
+                const classAttr = document.createAttribute('class');
+                classAttr.value = "li";
+                li.setAttributeNode(classAttr);
+                li.setAttributeNode(styleAttr);
+                ul.appendChild(li);
+                await sleep(1000);
+            }
+        })()
     </script>
 </body>
+
 </html>
