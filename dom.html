@@ -9,5 +9,31 @@
     <div class="app" id="app" dir="rtl">
         hello world!
     </div>
+    <ul id="ul">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+    </ul>
+    <div>
+        <button onclick="frameElementApi()">使用documentFragment API</button>
+    </div>
+    <script>
+        function frameElementApi() {
+            let ul = document.querySelector('#ul');
+            const liNodes = Array.from(ul.childNodes).filter(item => item.nodeType === Node.ELEMENT_NODE).reverse()
+            const documentFragment = document.createDocumentFragment()
+            liNodes.forEach(li => {
+                documentFragment.appendChild(li);
+            })
+            ul.appendChild(documentFragment);
+        }
+    </script>
+
+    <script>
+        let ul = document.querySelector('#ul');
+        let attrNode = ul.childNodes
+    </script>
 </body>
 </html>
