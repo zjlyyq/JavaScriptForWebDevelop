@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>a页面</title>
+</head>
+<body onunload="unloadHandle(event)">
+    <a href="b.html">link to page b</a>
+
+    <script>
+        // unload 事件
+        function unloadHandle(event) {
+            console.log('unload catch', event, event.cancelable);
+            event.preventDefault();                 
+        }
+        const link = document.querySelector('a');
+        const body = document.body;
+        body.addEventListener('click', event => {
+            console.log('body cache click event', event);
+        }, true)
+        link.addEventListener('click', event => {
+            console.log('link click event', event.defaultPrevented);
+            event.preventDefault();
+            console.log('link click event', event.defaultPrevented);
+        }, false)
+
+        // resize事件
+        window.addEventListener('resize', evnet => {
+            console.log('resize', evnet, evnet.cancelable)
+        })
+    </script>
+</body>
+</html>
