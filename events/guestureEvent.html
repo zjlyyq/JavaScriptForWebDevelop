@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手势事件实现图片预览</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vConsole/3.3.4/vconsole.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+        }
+        img {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 50%;
+            /* vertical-align: middle; */
+        }
+    </style>
+</head>
+
+<body>
+    <img src="./102417105_10157283842822423_786877686796387610_o.jpg"
+        alt="" srcset="">
+    <script>
+        new VConsole();
+        const img = document.querySelector('img')
+        console.log(img)
+        img.addEventListener('guesturestart', e => {
+            console.log('guesturestart', e)
+        })
+
+        img.addEventListener('gesturechange', e => {
+            console.log('gesturechange', e)
+        })
+    </script>
+</body>
+
+</html>
