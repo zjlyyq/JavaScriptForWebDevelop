@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Html5事件</title>
+</head>
+<body>
+    <ul style="position: absolute;visibility:hidden;background-color: antiquewhite;" id="menu">
+        <li>菜单项</li>
+        <li>菜单项</li>
+        <li>菜单项</li>
+        <li>菜单项</li>
+    </ul>
+    <script>
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault()
+            const {clientX, clientY} = e
+            const menu = document.querySelector('#menu')
+            menu.style.top = '' + clientY + 'px'
+            menu.style.left = '' + clientX + 'px'
+            setTimeout(() => {
+                menu.style.visibility = 'visible';
+            }, 500)
+        })
+    </script>
+</body>
+</html>
