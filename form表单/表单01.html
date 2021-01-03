@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单基础</title>
+</head>
+
+<body>
+    <div id="app">
+        <h2>测试表单提交</h2>
+        <form action="" id="form1">
+            <label for="name">name: </label> <input type="text" name="name" id="" tabindex=3>
+            <label for="name">age: </label> <input type="number" name="age" id="age" tabindex=3>
+            <label for="name">phone: </label> <input type="tel" name="phone" id="" tabindex=1>
+            <input type="submit" name="submit1" id="" value="input提交">
+            <button>button提交</button>
+            <input type="image" name="submit3" id="" src="./圣诞老人.png" style="width: 25px;vertical-align: middle;">
+            <input type="reset" value="input重置">
+            <button type="reset">button重置</button>
+        </form>
+    </div>
+
+    <script>
+        const form1 = document.querySelector('#form1');
+
+        window.addEventListener("load", (event) => {
+            document.forms[0].elements['age'].addEventListener('focus', (event) => {
+                console.log('age focus')
+                let target = event.target;
+                if (target.style.backgroundColor != "red") {
+                    target.style.backgroundColor = "yellow";
+                }
+            })
+            document.forms[0].elements['name'].addEventListener('change', (event) => {
+                console.log('name change')
+                let target = event.target;
+                target.style.backgroundColor = /[^\d]/.test(target.value) ? "red" : "";
+            })
+            document.forms[0].elements['age'].addEventListener('blur', (event) => {
+                console.log('age focus')
+                let target = event.target;
+                if (target.style.backgroundColor != "red") {
+                    target.style.backgroundColor = "white";
+                }
+            })
+            document.forms[0].elements['age'].focus();
+        });
+        form1.addEventListener('submit', (e) => {
+            console.log('表单1提交', event.target.elements)
+            event.preventDefault()
+        })
+        form1.addEventListener('reset', (e) => {
+            console.log('表单1重置', event.currentTarget)
+        })
+        window.addEventListener('pageshow', event => {
+            console.log('pageshow', event)
+        })
+        window.addEventListener('pagehide', event => {
+            console.log('pagehide', event)
+        })
+        // (function () {
+        //     let showCount = 0;
+        //     window.addEventListener("load", () => {
+        //         console.log("Load fired");
+        //     });
+        //     window.addEventListener("pageshow", () => {
+        //         showCount++;
+        //         console.log(`Show has been fired ${showCount} times.`);
+        //     });
+        // })();
+        // setTimeout(() => {
+        //     form1.submit();
+        // }, 2000)
+        setTimeout(() => {
+            form1.reset();
+        }, 2000)
+    </script>
+
+    <h2>文本框编程</h2>
+    <label for="">部分选中</label> <input type="number" name="start"> - <input type="number" name="end"> <button onclick="selectPart()">选择</button>
+    <input type="text" size="35" maxlength="50" value="initial value" id="input1">
+    <textarea rows="5" cols="15" id="text1">initial value</textarea>
+    <script>
+        const input1 = document.querySelector('#input1');
+        input1.addEventListener('focus', (event) => {
+            event.target.select()
+        })
+        input1.addEventListener('select', (event) => {
+            const textBox = event.target;
+            console.log('选中事件', event)
+            console.log(textBox)
+            console.log(`selectStart = ${textBox.selectionStart}, selectEnd = ${textBox.selectionEnd}`)
+            console.log(`input 选中的内容是: ${textBox.value.substring(textBox.selectionStart, textBox.selectionEnd)}`)
+        })
+
+        function selectPart() {
+            const start = document.querySelector('input[name=start]').value;
+            const end = document.querySelector('input[name=end]').value;
+            console.log(start, end)
+        }
+    </script>
+</body>
+
+</html>
