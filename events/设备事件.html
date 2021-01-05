@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.bootcdn.net/ajax/libs/vConsole/3.3.4/vconsole.min.js"></script>
+    <title>设备事件</title>
+</head>
+
+<body>
+    <p id="ppp"></p>
+    <p id="output">222</p>
+    <p id="output2">222</p>
+    <script>
+        new VConsole();
+        window.onload = function () {
+            const text = document.querySelector('#ppp');
+            const p2 = document.querySelector('#p2');
+            text.innerText = '屏幕朝向是：' + window.orientation;
+            // orientationchange 事件
+            window.addEventListener('orientationchange', (event) => {
+                console.log('windows orientation:', window.orientation);
+                text.innerText = '屏幕朝向是：' + window.orientation;
+            })
+            // setTimeout(() => {
+            //     window.orientation = -90
+            // }, 2000)
+            // deviceorientation
+            window.addEventListener("deviceorientation", (event) => {
+                let output = document.getElementById("output");
+                output.innerHTML =
+                    `Alpha=${event.alpha}, Beta=${event.beta}, Gamma=${event.gamma}<br>`;
+            });
+
+            // devicemotion
+            window.addEventListener("devicemotion", (event) => {
+                let output = document.getElementById("output2");
+                console.log(event.rotationRate)
+                if (event.rotationRate !== null) {
+                    output.innerHTML += `Alpha=${event.rotationRate.alpha}` +
+                        `Beta=${event.rotationRate.beta}` +
+                        `Gamma=${event.rotationRate.gamma}`;
+                }
+            });
+
+
+        }
+    </script>
+</body>
+
+</html>

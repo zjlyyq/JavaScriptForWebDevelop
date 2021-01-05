@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>合成事件</title>
+</head>
+<body>
+    <textarea name="" id="input" cols="30" rows="10"></textarea>
+    <script>
+        const inputDom = document.querySelector('#input');
+        inputDom.addEventListener('compositionstart', (event) => {
+            console.log('input CompositionEvent start:', event.data);
+        })
+        inputDom.addEventListener('compositionupdate', (event) => {
+            console.log('input CompositionEvent update:', event.data);
+            event.returnValue = 'wocao'
+            event.preventDefault()
+        })
+        inputDom.addEventListener('compositionend', (event) => {
+            console.log('input CompositionEvent end:', event.data);
+            event.returnValue = 'wocao'
+            event.preventDefault()
+        })
+    </script>
+</body>
+</html>

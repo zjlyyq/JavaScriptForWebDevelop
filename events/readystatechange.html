@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>readystatechange</title>
+</head>
+<body>
+    <div class="app">
+
+    </div>
+
+    <script>
+        const app = document.querySelector('.app')
+        document.addEventListener('readystatechange', e => {
+            console.log('readystatechange', e, e.target.readyState)
+        })
+    </script>
+</body>
+</html>
