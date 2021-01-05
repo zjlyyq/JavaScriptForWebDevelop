@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>indexDB</title>
+</head>
+
+<body>
+    <script>
+        let iDbRequests = indexedDB.open('user')
+        let user = {
+            userName: '001',
+            firstName: 'Zhang',
+            lastName: 'San',
+            age: 24
+        }
+        // 创建数据库模式
+        iDbRequests.onupgradeneeded = event => {
+            const db = event.target.result
+            console.log(db)
+            console.log(`db === iDbRequests: ` + db === iDbRequests)
+
+            if (db.objectStoreNames.contains('users')) {
+                db.deleteObjectStore('users')
+            }
+
+            // 创建对象存储 —— 第二个参数的 keyPath 属性表示应该用作键的存储对象的属性名
+            db.createObjectStore('users', { keyPath: 'userName'})
+        }
+        
+        // 事务
+        iDbRequests.onsuccess = event => {
+            console.log('success')
+            const db = event.target.result
+            const transaction = db.transaction('users', 'readwrite')
+            console.log(transaction)
+            // 存储对象
+            const store = transaction.objectStore("users")
+            console.log(store)
+            const requestPut = store.put(user)
+            const requestGet = store.get('001')
+            console.log(request)
+            requestGet.onsuccess = event => {
+                console.log('001', event.target.result)
+            }
+            requestPut.onsuccess = event => {
+                console.log(event.target.result)
+            }
+
+            requestPut.onerror = event => {
+                console.log(event)
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
