@@ -9,5 +9,5 @@ iDbRequests.onupgradeneeded = event  => {
     const db = event.target.result
     console.log(db === iDbRequests)
     
-    if (db.object)
+    // if (db.object)
 }

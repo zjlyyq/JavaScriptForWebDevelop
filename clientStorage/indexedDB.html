@@ -7,15 +7,30 @@
     <title>indexDB</title>
 </head>
 
-<body>
+<body onload="">
     <script>
-        let iDbRequests = indexedDB.open('user')
+        let iDbRequests = indexedDB.open('user1')
         let user = {
             userName: '001',
             firstName: 'Zhang',
             lastName: 'San',
-            age: 24
+            age: 33
         }
+        let users = [
+            {
+                userName: '002',
+                firstName: 'Li',
+                lastName: 'Si',
+                age: 29
+            },
+            {
+                userName: '003',
+                firstName: 'Wang',
+                lastName: 'Wu',
+                age: 21
+            }
+        ]
+        console.log(iDbRequests)
         // 创建数据库模式
         iDbRequests.onupgradeneeded = event => {
             const db = event.target.result
@@ -27,30 +42,100 @@
             }
 
             // 创建对象存储 —— 第二个参数的 keyPath 属性表示应该用作键的存储对象的属性名
-            db.createObjectStore('users', { keyPath: 'userName'})
+            const store = db.createObjectStore('users', { keyPath: 'userName' })
+
+            // 索引 必须在数据库onupgradeneeded事件中初始化
+            const index = store.createIndex('firstname', 'firstName', {unique: true})
+            console.log('索引建立陈宫',index)
         }
-        
-        // 事务
         iDbRequests.onsuccess = event => {
             console.log('success')
             const db = event.target.result
+            // 事务
             const transaction = db.transaction('users', 'readwrite')
             console.log(transaction)
             // 存储对象
             const store = transaction.objectStore("users")
-            console.log(store)
+            console.log('存储对象', store)
+            
             const requestPut = store.put(user)
             const requestGet = store.get('001')
-            console.log(request)
             requestGet.onsuccess = event => {
                 console.log('001', event.target.result)
             }
+            users.forEach(user => {
+                const request = store.put(user);
+                request.onsuccess = e => {
+                    console.log('已插入或更新', user)
+                }
+            })
             requestPut.onsuccess = event => {
                 console.log(event.target.result)
             }
 
             requestPut.onerror = event => {
                 console.log(event)
+            }
+
+            // 游标
+            // 所有对象范围游标
+            const curosrallRequest = store.openCursor()
+            // const curosrallRequest2 = store.openCursor(true)
+            console.log('包含所有对象范围游标', curosrallRequest)
+            curosrallRequest.onsuccess = event => {
+                const cursor = event.target.result
+                console.log(cursor)
+                if (cursor) {
+                    console.log(`游标查找：key: ${cursor.key}, value: ${JSON.stringify(cursor.value)}`)
+                    cursor.continue()   // 移动到下一记录
+                }else {
+                    console.log('Done!')
+                }
+            }
+            // curosrallRequest.onsuccess = event => {
+            //     const cursorAll = event.target.result
+            //     console.log(cursorAll)
+            // }
+            
+            // 键范围的键指的是主键
+            const onlyRange = IDBKeyRange.only('003')
+            console.log('onlyRange', onlyRange)
+            const keyCursorReq = store.openCursor(onlyRange)
+            keyCursorReq.onsuccess = event => {
+                const cursor = event.target.result
+                console.log(cursor)
+                if (cursor) {
+                    console.log(`key: ${cursor.key}, value: ${JSON.stringify(cursor.value)}`)
+                    cursor.continue()   // 移动到下一记录
+                }else {
+                    console.log('Done!')
+                }
+            }
+
+            const range = IDBKeyRange.bound('001', '003')
+            const req = store.openCursor(range)
+            req.onsuccess = event => {
+                const cursor = event.target.result
+                console.log(cursor)
+                if (cursor) {
+                    console.log(`key: ${cursor.key}, value: ${JSON.stringify(cursor.value)}`)
+                    cursor.continue()   // 移动到下一记录
+                }else {
+                    console.log('Done!')
+                }
+            }
+
+            // 索引
+            // 通过名字获取索引
+            try {
+                const lastIndex = store.index('firstname')
+                console.log('通过名字获取索引:', lastIndex)
+                const req = lastIndex.openCursor()
+                req.onsuccess = e => {
+                    console.log('索引创建游标', e.target.result)
+                }
+            } catch (error) {
+                throw error   
             }
         }
 
