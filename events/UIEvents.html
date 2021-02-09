@@ -24,10 +24,14 @@
             event.preventDefault();
             console.log('link click event', event.defaultPrevented);
         }, false)
-
+    
         // resize事件
         window.addEventListener('resize', evnet => {
             console.log('resize', evnet, evnet.cancelable)
+            // window.close()
+        })
+        document.addEventListener('visibilitychange', e => {
+            console.log(e, document.visibilityState)
         })
     </script>
 </body>
