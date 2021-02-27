@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通过Blob对象在行内创建</title>
+</head>
+<body>
+    <h3>通过Blob对象在行内创建工作者线程</h3>
+
+    <script>
+        const workerScript = `
+            self.onmessage = ({data}) => console.log('data', data)
+        `;
+        const workerScriptBlob = new Blob([workerScript]);
+        console.log(workerScriptBlob);
+
+        // 基于Blob实例创建对象URL
+        const workerScriptBlobUrl = URL.createObjectURL(workerScriptBlob);
+        console.log(workerScriptBlobUrl);
+
+        // 基于对象URL创建工作者专用线程
+        const worker = new Worker(workerScriptBlobUrl);
+
+        worker.postMessage({name: 'zjl'})
+    </script>
+</body>
+</html>
